@@ -41,7 +41,6 @@ drawCircle = (x, y, r) => {
 //END RANDOM
 
 
-
 //INTENSIVITY
 // drawIntensivity = (posX, posY, positive) => {
 //   let xC = 77;
@@ -118,7 +117,63 @@ drawCircle = (x, y, r) => {
 //END SIN
 
 
+//AUDIO 1
+// canvas.addEventListener('click', () => {
+//   var player = document.getElementById('player');
+//   player.play();
+//
+//   var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+//   var analyser = audioCtx.createAnalyser();
+//   var source = audioCtx.createMediaElementSource(player); // this is where we hook up the <audio> element
+//
+//   source.connect(analyser);
+//   source.connect(audioCtx.destination);
+//
+//
+//   analyser.fftSize = 256;
+//   var bufferLength = analyser.frequencyBinCount;
+//   console.log(bufferLength);
+//   var dataArray = new Uint8Array(bufferLength);
+//
+//   function draw() {
+//     drawVisual = requestAnimationFrame(draw);
+//
+//     analyser.getByteFrequencyData(dataArray);
+//
+//     clear();
+//     let xC = 77;
+//     let yC = 45;
+//     let step = 10;
+//     let xOffset = 20;
+//     let yOffset = 20;
+//     let baseR = 3;
+//     let maxR = 6;
+//     let minR = 1;
+//     for (let i = 0; i < xC; i++) {
+//       for (let j = 0; j < yC; j++) {
+//         let x = xOffset + i * step;
+//         let y = yOffset + j * step;
+//
+//         let r = baseR  + 5 *(dataArray[Math.floor((j/yC) * 100)]/240) -3;
+//
+//
+//         if (r > maxR) {
+//           r = maxR;
+//         } else if (r < minR) {
+//           r = minR;
+//         }
+//         drawCircle(x, y, r);
+//       }
+//     }
+//   };
+//
+//    draw();
+//
 
+// });
+//END AUDIO 1
+
+//AUDIO 2
 canvas.addEventListener('click', () => {
   var player = document.getElementById('player');
   player.play();
@@ -139,7 +194,7 @@ canvas.addEventListener('click', () => {
   function draw() {
     drawVisual = requestAnimationFrame(draw);
 
-    analyser.getByteFrequencyData(dataArray);
+    analyser.getByteTimeDomainData(dataArray);
 
     clear();
     let xC = 77;
@@ -150,33 +205,48 @@ canvas.addEventListener('click', () => {
     let baseR = 3;
     let maxR = 6;
     let minR = 1;
+    let m = [];
     for (let i = 0; i < xC; i++) {
       for (let j = 0; j < yC; j++) {
         let x = xOffset + i * step;
         let y = yOffset + j * step;
 
-        let r = baseR  + 5 *(dataArray[Math.floor((j/yC) * 100)]/240) -3;
-
-
+        let r = baseR;
         if (r > maxR) {
           r = maxR;
         } else if (r < minR) {
           r = minR;
         }
+
+        m[i * xC + j] = r;
+      }
+    }
+
+    for(let k = 0; k< yC; k++) {
+      for (let l = 0; l < xC; l++) {
+
+        let r = 6 - (6 * Math.abs(k -yC/2)/5) * dataArray[l] / 255;
+        if (r > maxR) {
+          r = maxR;
+        } else if (r < minR) {
+          r = minR;
+        }
+
+        m[l * xC + k] = r;
+      }
+    }
+    for (let i = 0; i < xC; i++) {
+      for (let j = 0; j < yC; j++) {
+        let x = xOffset + i * step;
+        let y = yOffset + j * step;
+        r = m[i * xC + j];
         drawCircle(x, y, r);
       }
     }
 
-    // for(var i = 0; i < bufferLength; i++) {
-    //   barHeight = dataArray[i]/2;
-    //
-    // }
   };
-
-   draw();
-
-
+  draw();
 });
-
+//AUDIO 2
 
 
