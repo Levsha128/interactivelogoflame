@@ -118,6 +118,7 @@ drawCircle = (x, y, r) => {
 
 
 //AUDIO 1
+// clear();
 // canvas.addEventListener('click', () => {
 //   var player = document.getElementById('player');
 //   player.play();
@@ -174,6 +175,7 @@ drawCircle = (x, y, r) => {
 //END AUDIO 1
 
 //AUDIO 2
+clear();
 canvas.addEventListener('click', () => {
   var player = document.getElementById('player');
   player.play();
